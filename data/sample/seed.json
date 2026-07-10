@@ -1,0 +1,79 @@
+{
+  "properties": [
+    {
+      "id": "PROP-001",
+      "name": "Bay View Apartments",
+      "address": "1200 Shellmound St, Emeryville, CA 94608"
+    }
+  ],
+  "units": [
+    {"id": "UNIT-101", "property_id": "PROP-001", "label": "101"},
+    {"id": "UNIT-204", "property_id": "PROP-001", "label": "204"}
+  ],
+  "tenants": [
+    {"id": "TEN-001", "unit_id": "UNIT-101", "name": "Alex Rivera", "email": "alex@example.com"},
+    {"id": "TEN-002", "unit_id": "UNIT-204", "name": "Jordan Lee", "email": "jordan@example.com"}
+  ],
+  "leases": [
+    {
+      "id": "LEASE-101",
+      "unit_id": "UNIT-101",
+      "start_date": "2025-01-01",
+      "end_date": "2025-12-31",
+      "renewal_notice_days": 60,
+      "raw_text": "Standard residential lease for Unit 101."
+    },
+    {
+      "id": "LEASE-204",
+      "unit_id": "UNIT-204",
+      "start_date": "2024-06-01",
+      "end_date": "2026-05-31",
+      "renewal_notice_days": 60,
+      "raw_text": "Standard residential lease for Unit 204."
+    }
+  ],
+  "lease_clauses": [
+    {
+      "id": "LC-101-1",
+      "lease_id": "LEASE-101",
+      "section": "4.2",
+      "title": "Renewal Notice",
+      "text": "Tenant must provide written notice at least 60 days before lease end to renew or vacate."
+    },
+    {
+      "id": "LC-101-2",
+      "lease_id": "LEASE-101",
+      "section": "7.1",
+      "title": "Pets",
+      "text": "One domestic cat or dog under 40 lbs permitted with $300 pet deposit and written approval."
+    },
+    {
+      "id": "LC-101-3",
+      "lease_id": "LEASE-101",
+      "section": "9.3",
+      "title": "Maintenance Requests",
+      "text": "Tenant shall report maintenance issues promptly. Emergency issues include no heat, gas leaks, and flooding."
+    },
+    {
+      "id": "LC-204-1",
+      "lease_id": "LEASE-204",
+      "section": "4.2",
+      "title": "Renewal Notice",
+      "text": "Tenant must give 60 days written notice prior to lease expiration to renew."
+    },
+    {
+      "id": "LC-204-2",
+      "lease_id": "LEASE-204",
+      "section": "8.4",
+      "title": "Subletting",
+      "text": "Subletting or assignment requires prior written consent from management."
+    },
+    {
+      "id": "LC-204-3",
+      "lease_id": "LEASE-204",
+      "section": "11.2",
+      "title": "HVAC",
+      "text": "Landlord maintains central HVAC. Tenant must allow access for scheduled service with 24-hour notice."
+    }
+  ]
+}

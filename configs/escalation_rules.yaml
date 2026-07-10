@@ -1,0 +1,24 @@
+urgent_keywords:
+  - no heat
+  - no hot water
+  - gas leak
+  - flooding
+  - water leak
+  - fire
+  - no electricity
+  - locked out
+
+human_approval_keywords:
+  - mold
+  - mildew
+  - legal
+  - lawsuit
+  - attorney
+  - discrimination
+  - harassment
+  - asbestos
+
+blocked_response_patterns:
+  - you are evicted
+  - we will refund
+  - guaranteed refund
