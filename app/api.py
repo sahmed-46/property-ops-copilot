@@ -64,14 +64,34 @@ def chat(request: ChatRequest) -> ChatResponse:
     return _pipeline.handle(request)
 
 
-def _mount_frontend() -> None:
+def _register_frontend() -> None:
     from pathlib import Path
 
+    from fastapi.responses import FileResponse
     from fastapi.staticfiles import StaticFiles
 
     static_dir = Path(__file__).resolve().parents[1] / "frontend" / "dist"
-    if static_dir.exists():
-        app.mount("/", StaticFiles(directory=static_dir, html=True), name="frontend")
+    if not static_dir.exists():
+        return
+
+    assets_dir = static_dir / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    index_file = static_dir / "index.html"
+
+    @app.get("/", include_in_schema=False)
+    def serve_root() -> FileResponse:
+        return FileResponse(index_file)
+
+    @app.get("/{spa_path:path}", include_in_schema=False)
+    def serve_spa(spa_path: str) -> FileResponse:
+        if spa_path.startswith("assets/"):
+            raise HTTPException(404)
+        candidate = static_dir / spa_path
+        if spa_path and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(index_file)
 
 
-_mount_frontend()
+_register_frontend()

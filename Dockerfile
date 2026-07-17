@@ -4,7 +4,7 @@ COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ .
 ENV VITE_API_BASE=
-RUN npm run build
+RUN npm run build && test -f dist/index.html
 
 FROM python:3.12-slim
 
@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements-api.txt
 
 COPY . .
 COPY --from=frontend /frontend/dist ./frontend/dist
+RUN test -f frontend/dist/index.html
 
 ENV PORT=8000
 EXPOSE 8000
