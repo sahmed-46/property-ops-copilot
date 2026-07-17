@@ -45,7 +45,9 @@ app.add_middleware(
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok"}
+    if not _pipeline:
+        raise HTTPException(503, "Pipeline starting")
+    return {"status": "ok", "units": len(_pipeline.list_units())}
 
 
 @app.get("/units")
@@ -103,15 +105,6 @@ def _register_frontend() -> None:
 
     @app.get("/", include_in_schema=False)
     def serve_root() -> FileResponse:
-        return FileResponse(index_file)
-
-    @app.get("/{spa_path:path}", include_in_schema=False)
-    def serve_spa(spa_path: str) -> FileResponse:
-        if spa_path.startswith("assets/"):
-            raise HTTPException(404)
-        candidate = static_dir / spa_path
-        if spa_path and candidate.is_file():
-            return FileResponse(candidate)
         return FileResponse(index_file)
 
 

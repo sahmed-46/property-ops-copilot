@@ -12,6 +12,21 @@
   margin-bottom: 20px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reconnect-btn {
+  border: 1px solid #c9d5e2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: #fff;
+  color: #0f5ea8;
+  font-weight: 600;
+}
+
 .eyebrow {
   margin: 0 0 4px;
   font-size: 0.8rem;

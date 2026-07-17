@@ -5,6 +5,7 @@ interface SidebarProps {
   unitId: string;
   sessionId: string;
   selectedUnit?: Unit;
+  apiStatus: "checking" | "online" | "offline" | "waking";
   onUnitChange: (unitId: string) => void;
   onSessionChange: (sessionId: string) => void;
 }
@@ -14,6 +15,7 @@ export function Sidebar({
   unitId,
   sessionId,
   selectedUnit,
+  apiStatus,
   onUnitChange,
   onSessionChange,
 }: SidebarProps) {
@@ -23,12 +25,22 @@ export function Sidebar({
 
       <label className="field">
         <span>Unit</span>
-        <select value={unitId} onChange={(event) => onUnitChange(event.target.value)}>
-          {units.map((unit) => (
-            <option key={unit.id} value={unit.id}>
-              {unit.id} ({unit.property_name} #{unit.label})
+        <select
+          value={unitId}
+          onChange={(event) => onUnitChange(event.target.value)}
+          disabled={apiStatus !== "online" || units.length === 0}
+        >
+          {units.length === 0 ? (
+            <option value="">
+              {apiStatus === "offline" ? "API offline — click Reconnect" : "Loading units..."}
             </option>
-          ))}
+          ) : (
+            units.map((unit) => (
+              <option key={unit.id} value={unit.id}>
+                {unit.id} ({unit.property_name} #{unit.label})
+              </option>
+            ))
+          )}
         </select>
       </label>
 

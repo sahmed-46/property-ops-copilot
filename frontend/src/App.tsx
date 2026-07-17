@@ -24,8 +24,8 @@ export default function App() {
   useEffect(() => {
     let cancelled = false;
 
-    async function bootstrap() {
-      const maxAttempts = 4;
+  async function bootstrap() {
+      const maxAttempts = 6;
       for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
         try {
           if (attempt > 1) {
@@ -34,13 +34,17 @@ export default function App() {
           await checkHealth();
           const loadedUnits = await fetchUnits();
           if (cancelled) return;
+          if (!loadedUnits.length) {
+            throw new Error("No units returned from API");
+          }
           setUnits(loadedUnits);
           setUnitId(loadedUnits[0]?.id ?? "");
           setApiStatus("online");
+          setError(null);
           return;
         } catch {
           if (attempt < maxAttempts) {
-            await new Promise((resolve) => window.setTimeout(resolve, 15000));
+            await new Promise((resolve) => window.setTimeout(resolve, 10000));
             continue;
           }
           if (!cancelled) setApiStatus("offline");
@@ -48,11 +52,29 @@ export default function App() {
       }
     }
 
-    bootstrap();
+    void bootstrap();
     return () => {
       cancelled = true;
     };
   }, []);
+
+  async function reconnect() {
+    setApiStatus("checking");
+    setError(null);
+    try {
+      await checkHealth();
+      const loadedUnits = await fetchUnits();
+      if (!loadedUnits.length) {
+        throw new Error("No units returned from API");
+      }
+      setUnits(loadedUnits);
+      setUnitId(loadedUnits[0]?.id ?? "");
+      setApiStatus("online");
+    } catch (err) {
+      setApiStatus("offline");
+      setError(err instanceof Error ? err.message : "Failed to reconnect");
+    }
+  }
 
   const selectedUnit = useMemo(
     () => units.find((unit) => unit.id === unitId),
@@ -116,13 +138,20 @@ export default function App() {
             Lease Q&amp;A with citations · Maintenance tickets · Compliance guardrails
           </p>
         </div>
-        <div className={`status-pill status-${apiStatus}`}>
-          API{" "}
-          {apiStatus === "checking"
-            ? "connecting"
-            : apiStatus === "waking"
-              ? "waking up (free tier cold start)"
-              : apiStatus}
+        <div className="header-actions">
+          <div className={`status-pill status-${apiStatus}`}>
+            API{" "}
+            {apiStatus === "checking"
+              ? "connecting"
+              : apiStatus === "waking"
+                ? "waking up..."
+                : apiStatus}
+          </div>
+          {apiStatus === "offline" ? (
+            <button type="button" className="reconnect-btn" onClick={() => void reconnect()}>
+              Reconnect
+            </button>
+          ) : null}
         </div>
       </header>
 
@@ -132,6 +161,7 @@ export default function App() {
           unitId={unitId}
           sessionId={sessionId}
           selectedUnit={selectedUnit}
+          apiStatus={apiStatus}
           onUnitChange={setUnitId}
           onSessionChange={setSessionId}
         />
