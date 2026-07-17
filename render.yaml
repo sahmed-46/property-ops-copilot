@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: property-ops-copilot
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_PATH
+        value: data/runtime/property_ops.db

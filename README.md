@@ -92,6 +92,22 @@ npm run dev
 
 Open http://localhost:5173. The Vite dev server proxies `/api` to the FastAPI backend.
 
+### Deploy React UI + API (production)
+
+**Option A — Render (recommended, single URL for UI + API)**  
+Connect repo → **New Blueprint** → uses `render.yaml`.  
+The Docker image builds the React app and serves it from FastAPI at the same URL.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/sahmed-46/property-ops-copilot)
+
+**Option B — Split deploy**  
+| Component | Platform | Config |
+|-----------|----------|--------|
+| FastAPI backend | Render | `render.yaml` (API-only) or root `Dockerfile` |
+| React UI | Vercel | `frontend/vercel.json` + `VITE_API_BASE` |
+
+For Vercel, set **Root Directory** to `frontend` and env `VITE_API_BASE=https://your-api-url`.
+
 ### Streamlit UI
 
 ```bash
