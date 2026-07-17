@@ -16,6 +16,8 @@ RUN pip install --no-cache-dir -r requirements-api.txt
 COPY . .
 COPY --from=frontend /frontend/dist ./frontend/dist
 RUN test -f frontend/dist/index.html
+ARG BUILD_SHA=dev
+RUN echo "Build SHA: ${BUILD_SHA}"
 
 ENV PORT=8000
 EXPOSE 8000

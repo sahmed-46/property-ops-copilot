@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { checkHealth, fetchUnits, sendChat } from "./api/client";
+import { fetchReady, sendChat } from "./api/client";
 import { MessageList } from "./components/MessageList";
 import { Sidebar } from "./components/Sidebar";
 import type { ChatMessage, Unit } from "./types";
@@ -31,8 +31,8 @@ export default function App() {
           if (attempt > 1) {
             setApiStatus("waking");
           }
-          await checkHealth();
-          const loadedUnits = await fetchUnits();
+          const ready = await fetchReady();
+          const loadedUnits = ready.units;
           if (cancelled) return;
           if (!loadedUnits.length) {
             throw new Error("No units returned from API");
@@ -62,8 +62,8 @@ export default function App() {
     setApiStatus("checking");
     setError(null);
     try {
-      await checkHealth();
-      const loadedUnits = await fetchUnits();
+      const ready = await fetchReady();
+      const loadedUnits = ready.units;
       if (!loadedUnits.length) {
         throw new Error("No units returned from API");
       }

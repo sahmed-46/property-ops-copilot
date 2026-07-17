@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.frontend_html import index_response
 from src.data.bootstrap import ensure_database
 from src.models import ChatRequest, ChatResponse
 from src.pipeline.run import CopilotPipeline
@@ -43,6 +44,13 @@ app.add_middleware(
 )
 
 
+@app.get("/ready")
+def ready() -> dict:
+    if not _pipeline:
+        raise HTTPException(503, "Pipeline starting")
+    return {"status": "ok", "units": _pipeline.list_units()}
+
+
 @app.get("/health")
 def health() -> dict:
     if not _pipeline:
@@ -69,6 +77,11 @@ def chat(request: ChatRequest) -> ChatResponse:
 api_router = APIRouter(prefix="/api")
 
 
+@api_router.get("/ready")
+def api_ready() -> dict:
+    return ready()
+
+
 @api_router.get("/health")
 def api_health() -> dict:
     return health()
@@ -90,7 +103,6 @@ app.include_router(api_router)
 def _register_frontend() -> None:
     from pathlib import Path
 
-    from fastapi.responses import FileResponse
     from fastapi.staticfiles import StaticFiles
 
     static_dir = Path(__file__).resolve().parents[1] / "frontend" / "dist"
@@ -104,8 +116,8 @@ def _register_frontend() -> None:
     index_file = static_dir / "index.html"
 
     @app.get("/", include_in_schema=False)
-    def serve_root() -> FileResponse:
-        return FileResponse(index_file)
+    def serve_root():
+        return index_response(index_file)
 
 
 _register_frontend()

@@ -38,6 +38,10 @@ export function sendChat(payload: ChatRequest): Promise<ChatResponse> {
   });
 }
 
+export function fetchReady(): Promise<{ status: string; units: Unit[] }> {
+  return request<{ status: string; units: Unit[] }>("/ready");
+}
+
 export function checkHealth(): Promise<{ status: string }> {
   return request<{ status: string }>("/health");
 }
