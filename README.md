@@ -134,6 +134,26 @@ USE_LLM=true
 
 Without an API key the system runs fully offline using keyword routing and retrieval-based answers.
 
+## Streamlit Cloud
+
+Deploy from GitHub at [share.streamlit.io](https://share.streamlit.io):
+
+| Setting | Value |
+|---------|-------|
+| Repository | `sahmed-46/property-ops-copilot` |
+| Branch | `master` |
+| Main file path | `streamlit_app.py` |
+
+The app auto-seeds SQLite from committed sample data on first launch (no download step required).
+
+Optional LLM routing: add secrets in **App settings → Secrets** (see `.streamlit/secrets.toml.example`).
+
+For full local development (FastAPI, MCP, pytest):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 ## License
 
 MIT

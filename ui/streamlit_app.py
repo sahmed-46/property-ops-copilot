@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -10,10 +11,21 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.models import ChatResponse  # noqa: E402
 from src.config import get_settings  # noqa: E402
-from src.models import ChatRequest  # noqa: E402
+from src.data.bootstrap import ensure_database  # noqa: E402
+from src.models import ChatRequest, ChatResponse  # noqa: E402
 from src.pipeline.run import CopilotPipeline  # noqa: E402
+
+
+def _apply_streamlit_secrets() -> None:
+    for key in ("OPENAI_API_KEY", "OPENAI_MODEL", "OPENAI_BASE_URL", "USE_LLM", "DATABASE_PATH"):
+        if key in st.secrets:
+            os.environ[key] = str(st.secrets[key])
+    get_settings.cache_clear()
+
+
+_apply_streamlit_secrets()
+ensure_database(sample_only=True)
 
 st.set_page_config(page_title="Property Ops Copilot", layout="wide")
 st.title("Property Ops Copilot")
