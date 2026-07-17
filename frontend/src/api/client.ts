@@ -1,6 +1,14 @@
 import type { ChatRequest, ChatResponse, Unit } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? "/api";
+function resolveApiBase(): string {
+  const configured = import.meta.env.VITE_API_BASE;
+  if (configured !== undefined && configured !== null) {
+    return configured;
+  }
+  return import.meta.env.DEV ? "/api" : "";
+}
+
+const API_BASE = resolveApiBase();
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {

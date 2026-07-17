@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.data.bootstrap import ensure_database
@@ -62,6 +62,27 @@ def chat(request: ChatRequest) -> ChatResponse:
     if not request.message.strip():
         raise HTTPException(400, "Message cannot be empty")
     return _pipeline.handle(request)
+
+
+api_router = APIRouter(prefix="/api")
+
+
+@api_router.get("/health")
+def api_health() -> dict:
+    return health()
+
+
+@api_router.get("/units")
+def api_list_units() -> list[dict]:
+    return list_units()
+
+
+@api_router.post("/chat", response_model=ChatResponse)
+def api_chat(request: ChatRequest) -> ChatResponse:
+    return chat(request)
+
+
+app.include_router(api_router)
 
 
 def _register_frontend() -> None:

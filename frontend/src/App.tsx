@@ -17,7 +17,7 @@ export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
-  const [apiStatus, setApiStatus] = useState<"checking" | "online" | "offline">("checking");
+  const [apiStatus, setApiStatus] = useState<"checking" | "online" | "offline" | "waking">("checking");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,15 +25,26 @@ export default function App() {
     let cancelled = false;
 
     async function bootstrap() {
-      try {
-        await checkHealth();
-        const loadedUnits = await fetchUnits();
-        if (cancelled) return;
-        setUnits(loadedUnits);
-        setUnitId(loadedUnits[0]?.id ?? "");
-        setApiStatus("online");
-      } catch {
-        if (!cancelled) setApiStatus("offline");
+      const maxAttempts = 4;
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        try {
+          if (attempt > 1) {
+            setApiStatus("waking");
+          }
+          await checkHealth();
+          const loadedUnits = await fetchUnits();
+          if (cancelled) return;
+          setUnits(loadedUnits);
+          setUnitId(loadedUnits[0]?.id ?? "");
+          setApiStatus("online");
+          return;
+        } catch {
+          if (attempt < maxAttempts) {
+            await new Promise((resolve) => window.setTimeout(resolve, 15000));
+            continue;
+          }
+          if (!cancelled) setApiStatus("offline");
+        }
       }
     }
 
@@ -106,7 +117,12 @@ export default function App() {
           </p>
         </div>
         <div className={`status-pill status-${apiStatus}`}>
-          API {apiStatus === "checking" ? "connecting" : apiStatus}
+          API{" "}
+          {apiStatus === "checking"
+            ? "connecting"
+            : apiStatus === "waking"
+              ? "waking up (free tier cold start)"
+              : apiStatus}
         </div>
       </header>
 
