@@ -6,21 +6,21 @@ downloads:
     source: huggingface_file
     repo: theatticusproject/cuad
     filename: CUAD_v1/master_clauses.csv
-    limit: 80
+    limit: 200
     outfile: cuad_clauses.csv
 
   propertypilot:
     source: huggingface
     dataset: Matanech/property-pilot-tickets
     split: train
-    limit: 150
+    limit: 500
     outfile: propertypilot_tickets.csv
 
   nyc_311:
     source: nyc_open_data
     # Housing-related 311 complaints (filtered sample)
     url: https://data.cityofnewyork.us/resource/erm2-nwe9.json
-    limit: 200
+    limit: 500
     complaint_types:
       - HEAT/HOT WATER
       - PLUMBING

@@ -9,3 +9,6 @@ data/cache/*
 data/runtime/
 *.db
 .DS_Store
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo

@@ -89,14 +89,10 @@ class ToolRegistry:
 def _compose_lease_answer(query: str, citations: list) -> str:
     if not citations:
         return (
-            "I could not find a matching lease clause for that question. "
-            "Please specify the unit or rephrase with lease terms like renewal, pets, or maintenance."
+            "I couldn't find a lease clause that answers that question. "
+            "Try mentioning your unit number or using words like pets, renewal, or maintenance."
         )
-    top = citations[0]
-    return (
-        f"Based on lease {top.lease_id}, section {top.section} ({top.title}): "
-        f"{top.excerpt}"
-    )
+    return citations[0].excerpt.strip()
 
 
 _MAINTENANCE_PATTERNS: list[tuple[re.Pattern[str], str]] = [

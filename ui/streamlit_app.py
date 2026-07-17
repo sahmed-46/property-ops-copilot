@@ -10,6 +10,8 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from src.models import ChatResponse  # noqa: E402
+from src.config import get_settings  # noqa: E402
 from src.models import ChatRequest  # noqa: E402
 from src.pipeline.run import CopilotPipeline  # noqa: E402
 
@@ -17,11 +19,40 @@ st.set_page_config(page_title="Property Ops Copilot", layout="wide")
 st.title("Property Ops Copilot")
 st.caption("Lease Q&A with citations · Maintenance tickets · Compliance guardrails")
 
-if "pipeline" not in st.session_state:
-    st.session_state.pipeline = CopilotPipeline()
+
+def _db_mtime() -> float:
+    path = get_settings().db_path
+    return path.stat().st_mtime if path.exists() else 0.0
+
+
+@st.cache_resource
+def get_pipeline(db_mtime: float) -> CopilotPipeline:
+    """Rebuild pipeline when property_ops.db changes (e.g. after init_data.py)."""
+    _ = db_mtime
+    return CopilotPipeline()
+
+
+def format_assistant_reply(result: ChatResponse) -> str:
+    """Plain-language reply with an inline citation when available."""
+    lines = [result.response.message.strip()]
+
+    if result.response.citations:
+        cite = result.response.citations[0]
+        lines.append("")
+        lines.append(f"**Source:** Section {cite.section} — {cite.title}")
+
+    if result.response.work_order_id and result.response.work_order_id not in result.response.message:
+        lines.append("")
+        lines.append(f"**Work order:** {result.response.work_order_id}")
+
+    return "\n".join(lines)
+
+
+if "messages" not in st.session_state:
     st.session_state.messages = []
 
-units = st.session_state.pipeline.list_units()
+pipeline = get_pipeline(_db_mtime())
+units = pipeline.list_units()
 unit_options = {f"{u['id']} ({u['property_name']} #{u['label']})": u["id"] for u in units}
 
 col1, col2 = st.columns([1, 2])
@@ -37,24 +68,14 @@ with col2:
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
-            if msg.get("meta"):
-                with st.expander("Details"):
-                    st.json(msg["meta"])
 
     prompt = st.chat_input("Ask about your lease or report a maintenance issue...")
     if prompt:
         st.session_state.messages.append({"role": "user", "content": prompt})
-        result = st.session_state.pipeline.handle(
+        result = pipeline.handle(
             ChatRequest(session_id=session_id, message=prompt, unit_id=unit_id)
         )
-        meta = {
-            "route": result.route.model_dump(),
-            "compliance": result.compliance.model_dump(),
-            "citations": [c.model_dump() for c in result.response.citations],
-            "work_order_id": result.response.work_order_id,
-            "approval_id": result.response.approval_id,
-        }
         st.session_state.messages.append(
-            {"role": "assistant", "content": result.response.message, "meta": meta}
+            {"role": "assistant", "content": format_assistant_reply(result)}
         )
         st.rerun()

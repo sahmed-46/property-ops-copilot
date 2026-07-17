@@ -24,7 +24,8 @@ property-ops-copilot/
 │   └── pipeline/run.py      # Orchestrator: route → agent → compliance
 ├── mcp_servers/             # Thin MCP wrappers (lease, tickets, audit)
 ├── app/api.py               # FastAPI REST API
-├── ui/streamlit_app.py      # Demo chat UI
+├── frontend/                # React + TypeScript chat UI (Vite)
+├── ui/streamlit_app.py      # Streamlit demo UI
 ├── scripts/
 │   ├── download_datasets.py # One-time fetch → data/cache/
 │   └── init_data.py         # sample + cache → SQLite
@@ -76,6 +77,20 @@ download_datasets.py  →  data/cache/*.csv   (run once, or --force to refresh)
 init_data.py          →  data/runtime/property_ops.db
 app / Streamlit       →  reads DB only
 ```
+
+### React UI (TypeScript)
+
+```bash
+# Terminal 1 — API
+uvicorn app.api:app --reload --host 127.0.0.1 --port 8000
+
+# Terminal 2 — frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. The Vite dev server proxies `/api` to the FastAPI backend.
 
 ### Streamlit UI
 

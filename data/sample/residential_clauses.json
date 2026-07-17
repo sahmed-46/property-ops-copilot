@@ -1,0 +1,128 @@
+[
+  {
+    "id": "LC-101-4",
+    "lease_id": "LEASE-101",
+    "section": "3.1",
+    "title": "Rent Due Date",
+    "text": "Monthly rent is due on the 1st of each month. Payments received after the 5th are considered late."
+  },
+  {
+    "id": "LC-101-5",
+    "lease_id": "LEASE-101",
+    "section": "3.2",
+    "title": "Late Fee",
+    "text": "A late fee of $75 applies if rent is not received by the 5th of the month."
+  },
+  {
+    "id": "LC-101-6",
+    "lease_id": "LEASE-101",
+    "section": "5.1",
+    "title": "Parking",
+    "text": "One assigned parking space is included. Additional vehicles require management approval and a $50 monthly fee."
+  },
+  {
+    "id": "LC-101-7",
+    "lease_id": "LEASE-101",
+    "section": "6.1",
+    "title": "Utilities",
+    "text": "Tenant pays electricity and internet. Water and trash are included in rent."
+  },
+  {
+    "id": "LC-101-8",
+    "lease_id": "LEASE-101",
+    "section": "6.2",
+    "title": "Noise and Quiet Hours",
+    "text": "Quiet hours are 10:00 PM to 8:00 AM daily. Excessive noise complaints may result in lease violation notices."
+  },
+  {
+    "id": "LC-101-9",
+    "lease_id": "LEASE-101",
+    "section": "10.1",
+    "title": "Security Deposit",
+    "text": "Security deposit will be returned within 21 days after move-out, minus lawful deductions for damage beyond normal wear and tear."
+  },
+  {
+    "id": "LC-101-10",
+    "lease_id": "LEASE-101",
+    "section": "12.1",
+    "title": "Renters Insurance",
+    "text": "Tenant must maintain renters insurance with at least $100,000 liability coverage for the full lease term."
+  },
+  {
+    "id": "LC-101-11",
+    "lease_id": "LEASE-101",
+    "section": "12.2",
+    "title": "Guests",
+    "text": "Guests may stay up to 14 consecutive days without written approval. Longer stays require management consent."
+  },
+  {
+    "id": "LC-101-12",
+    "lease_id": "LEASE-101",
+    "section": "14.1",
+    "title": "Move-Out Cleaning",
+    "text": "Unit must be returned broom-clean with all personal items removed. Professional carpet cleaning is required if stains are present."
+  },
+  {
+    "id": "LC-204-4",
+    "lease_id": "LEASE-204",
+    "section": "3.1",
+    "title": "Rent Due Date",
+    "text": "Rent is due on the first day of each month. A grace period applies until the 5th before late fees are assessed."
+  },
+  {
+    "id": "LC-204-5",
+    "lease_id": "LEASE-204",
+    "section": "5.2",
+    "title": "Storage Locker",
+    "text": "One storage locker may be rented for $35 per month subject to availability and a separate addendum."
+  },
+  {
+    "id": "LC-204-6",
+    "lease_id": "LEASE-204",
+    "section": "6.1",
+    "title": "Noise and Quiet Hours",
+    "text": "Tenants must keep noise to a reasonable level at all times. Quiet hours are from 10 PM to 8 AM."
+  },
+  {
+    "id": "LC-204-7",
+    "lease_id": "LEASE-204",
+    "section": "7.2",
+    "title": "Smoking",
+    "text": "Smoking and vaping are prohibited inside the unit and on balconies. Designated outdoor areas only."
+  },
+  {
+    "id": "LC-204-8",
+    "lease_id": "LEASE-204",
+    "section": "10.1",
+    "title": "Security Deposit",
+    "text": "Deposit refunds are processed within 21 days after lease end, itemized deductions may include unpaid rent and repair costs."
+  },
+  {
+    "id": "LC-204-9",
+    "lease_id": "LEASE-204",
+    "section": "12.1",
+    "title": "Renters Insurance",
+    "text": "Proof of active renters insurance is required at move-in and upon renewal."
+  },
+  {
+    "id": "LC-204-10",
+    "lease_id": "LEASE-204",
+    "section": "13.1",
+    "title": "Water Leak Reporting",
+    "text": "Tenants must report water leaks, dampness, or moisture within 24 hours to prevent property damage."
+  },
+  {
+    "id": "LC-204-11",
+    "lease_id": "LEASE-204",
+    "section": "14.1",
+    "title": "Keys and Access",
+    "text": "Lost keys or fobs incur a $50 replacement fee. Do not duplicate keys without management approval."
+  },
+  {
+    "id": "LC-204-12",
+    "lease_id": "LEASE-204",
+    "section": "15.1",
+    "title": "Early Termination",
+    "text": "Early lease termination requires 60 days written notice and a fee equal to two months rent unless otherwise approved."
+  }
+]

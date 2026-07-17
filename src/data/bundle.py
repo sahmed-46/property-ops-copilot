@@ -6,13 +6,14 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.data.paths import SAMPLE_SEED_PATH, cache_dir, datasets_config
+from src.data.paths import RESIDENTIAL_CLAUSES_PATH, SAMPLE_SEED_PATH, cache_dir, datasets_config
 
 
 def build_data_bundle(*, use_cache: bool = True) -> dict:
     """Merge committed sample seed with optional cached external datasets."""
     data = deepcopy(json.loads(SAMPLE_SEED_PATH.read_text(encoding="utf-8")))
     data.setdefault("work_orders", [])
+    _merge_residential_clauses(data)
 
     if not use_cache:
         return data
@@ -25,6 +26,17 @@ def build_data_bundle(*, use_cache: bool = True) -> dict:
     _merge_historical_tickets(data, cache / cfg["downloads"]["nyc_311"]["outfile"])
 
     return data
+
+
+def _merge_residential_clauses(data: dict) -> None:
+    path = RESIDENTIAL_CLAUSES_PATH
+    if not path.exists():
+        return
+    existing_ids = {c["id"] for c in data["lease_clauses"]}
+    for row in json.loads(path.read_text(encoding="utf-8")):
+        if row["id"] in existing_ids:
+            continue
+        data["lease_clauses"].append(row)
 
 
 def _merge_cuad_clauses(data: dict, path: Path) -> None:

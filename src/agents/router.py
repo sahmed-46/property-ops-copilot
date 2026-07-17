@@ -7,11 +7,13 @@ from src.llm.client import chat_completion
 from src.models import AgentName, RouteDecision
 
 _LEASE_HINTS = re.compile(
-    r"\b(lease|rent|renewal|notice|deposit|pet|sublet|terminate|clause|move[- ]?out)\b",
+    r"\b(lease|rent|renewal|notice|deposit|pet|sublet|terminate|clause|move[- ]?out|"
+    r"parking|guest|noise|insurance|utility|utilities|smok\w*|key|keys|storage|cleaning)\b",
     re.I,
 )
 _MAINT_HINTS = re.compile(
-    r"\b(broken|repair|fix|maintenance|ticket|work order|leak\w*|heat|hvac|plumb\w*|outlet)\b",
+    r"\b(broken|repair|fix|maintenance|ticket|work order|leak\w*|heat|hvac|plumb\w*|outlet|"
+    r"mold|pest|roach|clog|clogged|ac|heater|faucet|toilet)\b",
     re.I,
 )
 

@@ -3,6 +3,7 @@
 | Path | Committed? | Purpose |
 |------|------------|---------|
 | `data/sample/seed.json` | Yes | Minimal demo seed (works offline, no download) |
+| `data/sample/residential_clauses.json` | Yes | 18 apartment lease topics (rent, parking, noise, etc.) |
 | `data/cache/` | No (gitignored) | Downloaded CSVs, reused on every `init_data.py` run |
 | `data/runtime/` | No (gitignored) | SQLite database built from sample + cache |
 

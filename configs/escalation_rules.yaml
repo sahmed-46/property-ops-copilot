@@ -7,6 +7,9 @@ urgent_keywords:
   - fire
   - no electricity
   - locked out
+  - sewage
+  - broken window
+  - no water
 
 human_approval_keywords:
   - mold
@@ -17,6 +20,9 @@ human_approval_keywords:
   - discrimination
   - harassment
   - asbestos
+  - bedbugs
+  - bed bugs
+  - cockroach
 
 blocked_response_patterns:
   - you are evicted

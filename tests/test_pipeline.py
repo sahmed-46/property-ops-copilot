@@ -15,6 +15,19 @@ def test_lease_search_returns_citations(pipeline):
     assert "pet" in result.response.message.lower()
 
 
+def test_rent_due_date(pipeline):
+    result = pipeline.handle(
+        ChatRequest(
+            session_id="t1b",
+            message="When is rent due?",
+            unit_id="UNIT-101",
+        )
+    )
+    assert result.route.agent.value == "lease"
+    assert result.response.citations
+    assert "1st" in result.response.message or "first" in result.response.message.lower()
+
+
 def test_maintenance_creates_work_order(pipeline):
     result = pipeline.handle(
         ChatRequest(
